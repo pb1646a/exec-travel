@@ -1,0 +1,14 @@
+{
+  "name": "exec-travel",
+  "version": "1.0.0",
+  "description": "Qucik Flights Components",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "backend": "git+https://pb1646a@bitbucket.org/pb1646a/node-backend-js.git#master"
+  },
+  "author": "",
+  "license": "ISC"
+}
