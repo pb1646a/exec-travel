@@ -1,0 +1,18 @@
+.form-container {
+  font-size: 12px !important;
+  display: flex !important;
+  flex-wrap: wrap;
+  background-color:orange;
+  margin: 0.5px;
+  justify-content: space-around;
+}
+.form-group{
+  margin-bottom: 0px !important;
+  margin-top: 2px !important;
+  padding: 5px;
+  color: darkslateblue;
+  font-weight: bold !important;
+  font-size:12px;
+}
+
+

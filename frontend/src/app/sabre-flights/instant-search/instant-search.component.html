@@ -1,0 +1,60 @@
+
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <form  class="form-container" [formGroup]="instantSearchForm" (ngSubmit)="onInstant(instantSearchForm.value)">
+            <div class="form-group">
+                <mat-form-field>
+                  <input matInput type="text" placeholder="Depart From" formControlName= "departure" [matAutocomplete]="depCity" />
+                  <mat-error *ngIf="fc['departure'].touched && fc['departure'].errors?.required">Please Enter A Departure Origin</mat-error>
+              </mat-form-field>
+              <mat-autocomplete #depCity="matAutocomplete">
+                <mat-optgroup *ngFor="let city of $$depCities|async" [label]="city.name">
+                <mat-option *ngFor="let airports of city.airports[0]" [value]='airports.code'>{{airports.name}}</mat-option>
+              </mat-optgroup>
+              </mat-autocomplete>
+              </div>
+          <div class="form-group">
+            <mat-form-field>
+                <input matInput type="text" placeholder="Destination To" formControlName= "destination" [matAutocomplete]="desCity"/>
+            <mat-error *ngIf="fc['destination'].touched && fc['destination'].errors?.required">Please Enter A Destination Location</mat-error>
+            </mat-form-field>
+            <mat-autocomplete #desCity="matAutocomplete">
+                <mat-optgroup *ngFor="let city of $$desCities|async" [label]="city.name">
+                <mat-option *ngFor="let airports of city.airports[0]" [value]='airports.code'>{{airports.name}}</mat-option>
+              </mat-optgroup>
+              </mat-autocomplete>
+              </div>
+              <div class="form-group">
+                <mat-form-field>
+                  <input matInput formControlName="numberofpassengers" placeholder="Number of Travelers">
+                </mat-form-field>
+              </div>
+
+          <div class="form-group">
+            <mat-form-field>
+                <input matInput [matDatepicker]="departuredate" placeholder="Choose a Return Date" formControlName= "departuredate">
+                <mat-datepicker-toggle matSuffix [for]="departuredate"></mat-datepicker-toggle>
+                <mat-datepicker #departuredate></mat-datepicker>
+            </mat-form-field>
+
+          </div>
+          <div class="form-group">
+            <mat-form-field>
+                <input matInput [matDatepicker]="returndate" placeholder="Choose a Return Date" formControlName="returndate">
+                <mat-datepicker-toggle matSuffix [for]="returndate" ></mat-datepicker-toggle>
+                <mat-datepicker #returndate></mat-datepicker>
+            </mat-form-field>
+
+          </div>
+          <div class="form-group">
+            <button mat-raised-button>Search</button>
+        </div>
+      </form>
+    </div>
+    </div>
+
+</div>
+
+

@@ -1,0 +1,60 @@
+<div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-sm-12 col-xs 12">
+            <app-search-filter (filterChecked)="filterApplied($event)"></app-search-filter>
+          </div>
+          <div class="col-lg-4 col-md-8 col-sm-12 col-xs 12">
+
+{{this.$$filtered|async|json}};
+            <div *ngIf="($$itineraries|async)?.itineraries.length>0">
+              <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">{{($$itineraries|async).itineraryData.OriginLocation}} - {{($$itineraries|async).itineraryData.DestinationLocation}}</div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">Depart: {{($$itineraries|async).itineraryData?.DepartureDateTime}}</div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" *ngIf="($$itineraries|async)?.itineraryData?.ReturnDateTime">Return: {{($$itineraries|async).itineraryData?.ReturnDateTime}}</div>
+                </div>
+              </div>
+                <div class="item-container" *ngFor="let it of ($$itineraries|async)?.itineraries|slice:lowerLimit:higherLimit; let i= index">
+                  <div [style.background-color]="'whitesmoke'" class="container">
+                    <div class="row">
+                      <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                          <div [className]="k%2===0?'even-segment':'odd-segment'" *ngFor= "let segments of it.AirItinerary.OriginDestinationOptions.OriginDestinationOption let k=index">
+                              <div class="container-fluid">
+                                <div class="row">
+                                  <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                                    Airline Images
+                                  </div>
+                                  <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                                   <div *ngFor="let segment of segments.FlightSegment; let j =index;">
+                                    <h5> <mat-icon svgIcon="airplane_takeoff"></mat-icon>
+                                      {{segment.DepartureAirport.LocationCode}} - {{segment.ArrivalAirport.LocationCode}}
+                                    <mat-icon svgIcon="airplane_landing"></mat-icon> </h5>
+                                    <span>{{(segments.ElapsedTime)| minuteSeconds }}</span>
+                                     <br /> <span [style.font-size.px]="'10'">{{segment.DepartureDateTime}}----->{{segment.ArrivalDateTime}}</span>
+                                     <br /> <span [style.font-size.px]="'8'">{{segment.OperatingAirline.Code}} {{segment.OperatingAirline.FlightNumber}} || </span> <span [style.font-size.px]="'8'">Booking Code: {{segment.ResBookDesigCode}} || </span><span [style.font-size.px]="'8'">AirCraft: {{segment.Equipment.AirEquipType}}</span>
+                                    </div>
+                                 </div>
+                                </div>
+                              </div>
+                             </div>
+                      </div>
+                      <div [style.padding-top.rem]="'5'" class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                          <h4><span >{{it.AirItineraryPricingInfo.ItinTotalFare.TotalFare.Amount | currency:'USD':'symbol'}}</span></h4>
+                      </div>
+                  </div>
+                    </div>
+
+                  </div>
+                  <mat-paginator [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="pageSizeOptions" [length]="($$itineraries|async)?.itineraries.length" (page)="pageChange($event);"></mat-paginator>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 col-sm-12 col-xs 12"></div>
+
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+
+
+

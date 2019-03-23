@@ -1,0 +1,70 @@
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="example-container">
+
+        <table mat-table *ngIf="($$filters|async).airlines.length>0" [dataSource]="($$filters|async).airlines">
+            <ng-container matColumnDef="airline">
+              <th mat-header-cell *matHeaderCellDef>Airline</th>
+              <td mat-cell *matCellDef="let brand">{{brand.Code}}</td>
+            </ng-container>
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox
+                    (change)="$event? selectAll(airlineselection,'airlines'):null;"
+                    [indeterminate]= "airlineselection.hasValue() && !isAllSelected(airlineselection,'airlines')"
+                    [checked]="airlineselection.hasValue()&&isAllSelected(airlineselection,'airlines')"
+                    >
+          </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <mat-checkbox (click)="$event.stopPropagation();"
+                                (change)="$event ? airlineselection.toggle(row) : null; onSelect(airlineselection,'airlines')"
+                                [checked]="airlineselection.isSelected(row)"
+                                >
+                  </mat-checkbox>
+                </td>
+              </ng-container>
+            <tr mat-header-row *matHeaderRowDef="airlineFilterCol"></tr>
+            <tr mat-row *matRowDef="let row; columns: airlineFilterCol"></tr>
+          </table>
+
+    </div>
+
+
+  </div>
+  <div class="row">
+    <div class="example-container">
+        <table *ngIf="($$filters|async).stops.length>0" mat-table [dataSource]="($$filters|async).stops">
+            <ng-container matColumnDef="stops">
+              <th mat-header-cell *matHeaderCellDef>Stops</th>
+              <td mat-cell *matCellDef="let stop">{{stop}}</td>
+            </ng-container>
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox
+                    (change)="$event? selectAll(stopselection,'stops'):null;"
+                    [indeterminate]= "stopselection.hasValue() && !isAllSelected(stopselection,'stops')"
+                    [checked]="stopselection.hasValue()&&isAllSelected(stopselection,'stops')"
+                    >
+          </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <mat-checkbox (click)="$event.stopPropagation()"
+                                (change)="$event ? stopselection.toggle(row) : null;"
+                                [checked]="stopselection.isSelected(row)"
+                                >
+                  </mat-checkbox>
+                </td>
+              </ng-container>
+            <tr mat-header-row *matHeaderRowDef="stopsFilterCol"></tr>
+            <tr mat-row *matRowDef="let row; columns: stopsFilterCol"></tr>
+          </table>
+
+    </div>
+
+  </div>
+</div>
+
+
+
