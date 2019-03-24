@@ -1,19 +1,18 @@
 <div class="container-fluid">
         <div class="row">
           <div class="col-lg-4 col-md-4 col-sm-12 col-xs 12">
-            <app-search-filter (filterChecked)="filterApplied($event)"></app-search-filter>
+            <app-search-filter></app-search-filter>
           </div>
-          <div class="col-lg-4 col-md-8 col-sm-12 col-xs 12">
-
-{{this.$$filtered|async|json}};
+          <div class="col-lg-6 col-md-8 col-sm-12 col-xs 12">
             <div *ngIf="($$itineraries|async)?.itineraries.length>0">
               <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">{{($$itineraries|async).itineraryData.OriginLocation}} - {{($$itineraries|async).itineraryData.DestinationLocation}}</div>
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">Depart: {{($$itineraries|async).itineraryData?.DepartureDateTime}}</div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">{{($$itineraries|async)?.itineraryData.OriginLocation}} - {{($$itineraries|async).itineraryData.DestinationLocation}}</div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">Depart: {{($$itineraries|async)?.itineraryData?.DepartureDateTime}}</div>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" *ngIf="($$itineraries|async)?.itineraryData?.ReturnDateTime">Return: {{($$itineraries|async).itineraryData?.ReturnDateTime}}</div>
                 </div>
               </div>
+              <mat-paginator [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="pageSizeOptions" [length]="($$itineraries|async)?.itineraries.length" (page)="pageChange($event);"></mat-paginator>
                 <div class="item-container" *ngFor="let it of ($$itineraries|async)?.itineraries|slice:lowerLimit:higherLimit; let i= index">
                   <div [style.background-color]="'whitesmoke'" class="container">
                     <div class="row">
@@ -54,7 +53,6 @@
       </div>
 
       <mat-divider></mat-divider>
-
 
 
 

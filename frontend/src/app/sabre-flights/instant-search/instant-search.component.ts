@@ -12,6 +12,7 @@ import {
 } from "rxjs/operators";
 import * as _moment from "moment";
 import { of } from "rxjs";
+import { FilterService } from '../services/filter/filter.service';
 //import {default as _rollupMoment} from 'moment';
 const moment = _moment; //_rollupMoment ||
 @Component({
@@ -43,7 +44,8 @@ export class InstantSearchComponent implements OnInit, OnDestroy {
   constructor(
     public _cities: CitiesService,
     public _forms: FormsService,
-    public _search: SearchService
+    public _search: SearchService,
+    public _filter: FilterService
   ) {}
   get instantSearchForm(): FormGroup {
     return this._forms.form;
@@ -97,6 +99,8 @@ export class InstantSearchComponent implements OnInit, OnDestroy {
   }
 
   onInstant(value) {
+    this._filter.airlineselection.clear();
+    this._filter.stopselection.clear();
     return this._search.getInstantFlights(value);
   }
   ngOnDestroy() {

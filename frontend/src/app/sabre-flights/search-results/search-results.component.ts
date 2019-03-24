@@ -1,10 +1,13 @@
-import { FilterService } from './../services/filter/filter.service';
-import { map } from "rxjs/operators";
-import { distinctUntilChanged } from "rxjs/operators";
-import { PricedItinerary, RootItinObject, MarketingAirline } from "./../models/itinerary.model";
+import { FilterService } from "./../services/filter/filter.service";
+import { map, mergeMap, switchMap, withLatestFrom } from "rxjs/operators";
+import {
+  PricedItinerary,
+  RootItinObject,
+  MarketingAirline
+} from "./../models/itinerary.model";
 import { SearchService } from "./../services/search/search.service";
 import { Component, OnInit } from "@angular/core";
-import { Observable, of } from "rxjs";
+import { Observable, of, from } from "rxjs";
 import { MatIconRegistry } from "@angular/material";
 import { DomSanitizer } from "@angular/platform-browser";
 
@@ -22,6 +25,7 @@ export class SearchResultsComponent implements OnInit {
   }>;
   $$filtered;
   $$test;
+  filterVal: MarketingAirline[] = [];
   pageIndex = 0;
   lowerLimit = 0;
   pageSize = 15;
@@ -54,13 +58,34 @@ export class SearchResultsComponent implements OnInit {
     return typeof obj;
   }
   ngOnInit() {
-    this.$$itineraries = this._search.returnInstantSearchAsObs();
-    this.$$test = this._search.returnInstantSearchAsObs();
-    this.$$filtered = this._filter.returnasobs();
-  
-  }
-  filterApplied(filter) {
-  console.log(filter);
+    this._search.returnInstantSearchAsObs().subscribe(it => {
+      this.itineraries = it.itineraries;
+      this.itineraryData = it.itineraryData;
+    return (this.$$itineraries = of(it));
+    });
+/*
+    this.$$filtered = this._filter.return$$SelectedFilters();
+    this.$$filtered
+      .pipe(
+        map(filter => {
+          return filter;
+        })
+      )
+      .subscribe(filter => {
+        let final = filter.map(filt => {
+          return this.itineraries.filter(it => {
+            return it.TPA_Extensions.ValidatingCarrier.Code.includes(filt.Code)
+              ? it
+              : false;
+          });
+        });
+        final = final.flat();
+        return this.$$test = of({
+          itineraries: final,
+          itineraryData: this.itineraryData
+        });
+      });
+      */
   }
 
   pageChange(event) {

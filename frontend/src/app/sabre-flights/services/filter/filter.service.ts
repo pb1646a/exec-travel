@@ -1,14 +1,104 @@
+import { SelectionModel } from '@angular/cdk/collections';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { PricedItinerary, RootItinObject } from '../../models/itinerary.model';
+import { SearchService } from '../search/search.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FilterService {
-$$filter= new BehaviorSubject([{Code:''}]);
+  $$selectedFilter= new BehaviorSubject({airlines:[], stops:[]});
+  itineraries: PricedItinerary[] = [];
+  itineraryData: RootItinObject;
+  $$filters = new BehaviorSubject({ airlines: [], stops: [] });
+  airlineselection = new SelectionModel(true, []);
+  stopselection = new SelectionModel(true, []);
+  airlines = [];
+  stops = [];
+  $$filtered;
+  $$test;
 
-  constructor() { }
-returnasobs(){
-  return this.$$filter.asObservable();
+
+  constructor(private _search: SearchService) {}
+
+  isAllSelected(selection, filter) {
+    let numRows;
+    this.$$filters.subscribe(data => {
+      numRows = data[filter].length;
+    });
+    const selected = selection.selected.length;
+    return selected === numRows;
+  }
+
+
+  selectAll(selection, filter) {
+    this.isAllSelected(selection, filter)
+      ? selection.clear()
+      : this.$$filters.subscribe(data => {
+          data[filter].forEach(el => {
+            selection.select(el);
+          });
+        });
+    //return this.onSelect(selection, filter);
+  }
+  getUnique(array, key) {
+    const unique = array
+      .map(item => item[key])
+      .map((item, index, final) => {
+        return final.indexOf(item) === index && index;
+      })
+      .filter(item => array[item])
+      .map(item => array[item]);
+    return unique;
+  }
+
+
+  return$$Filters(){
+  return this.$$filters.asObservable();
+}
+return$$SelectedFilters(){
+  return this.$$selectedFilter.asObservable();
+}
+
+getFilters(){
+  this._search.returnInstantSearchAsObs().subscribe(itineraries => {
+
+
+    this.airlines = this.getUnique(
+      itineraries.itineraries.map(segments => {
+        return segments.TPA_Extensions.ValidatingCarrier;
+      }),
+      "Code"
+    );
+    this.stops = itineraries.itineraries.map(segments => {
+      return segments.AirItinerary.OriginDestinationOptions.OriginDestinationOption.map(
+        segment => {
+          return segment.FlightSegment.length;
+        }
+      );
+    });
+
+    this.stops = [].concat.apply([], this.stops);
+    this.stops = this.stops.filter((curr, index) => {
+      return this.stops.indexOf(curr) === index;
+    });
+    this.stops = this.stops.map(size => {
+      return size - 1;
+    });
+
+    this.$$filters.next({
+      airlines: [...this.airlines],
+      stops: [...this.stops]
+    });
+    // this.selectAll(this.stopselection, "stops", "newsearch");
+    // this.selectAll(this.airlineselection, "airlines");
+  });
+}
+selectFilter(){
+  console.log(this.airlineselection.selected);
+
+  return this.$$selectedFilter.next({airlines: this.airlineselection.selected,stops: this.stopselection.selected});
+
 }
 }
