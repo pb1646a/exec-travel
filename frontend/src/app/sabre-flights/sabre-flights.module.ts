@@ -11,7 +11,7 @@ import { SearchFilterComponent } from './search-filter/search-filter.component';
   imports:[CommonModule, CommonComponentsModule, ReactiveFormsModule],
   declarations: [InstantSearchComponent, SearchResultsComponent, SabrePromotionsComponent, SearchFilterComponent],
   providers:[],
-  exports:[InstantSearchComponent, SearchResultsComponent, SabrePromotionsComponent ]
+  exports:[InstantSearchComponent, SearchResultsComponent, SabrePromotionsComponent, SearchFilterComponent ]
 })
 
 export class SabreFlightsModule{}

@@ -1,5 +1,5 @@
 import { FilterService } from "./../services/filter/filter.service";
-import { map, mergeMap, switchMap, withLatestFrom } from "rxjs/operators";
+import { map } from "rxjs/operators";
 import {
   PricedItinerary,
   RootItinObject,
@@ -28,7 +28,7 @@ export class SearchResultsComponent implements OnInit {
   filterVal: MarketingAirline[] = [];
   pageIndex = 0;
   lowerLimit = 0;
-  pageSize = 15;
+  pageSize = 10;
   higherLimit = this.pageSize * (this.pageIndex + 1);
   pageSizeOptions = [10, 15, 25];
 
@@ -61,9 +61,10 @@ export class SearchResultsComponent implements OnInit {
     this._search.returnInstantSearchAsObs().subscribe(it => {
       this.itineraries = it.itineraries;
       this.itineraryData = it.itineraryData;
-    return (this.$$itineraries = of(it));
+      return (this.$$itineraries = of(it));
     });
-/*
+    // filter strategy filter->filter or filter && filter && compare
+
     this.$$filtered = this._filter.return$$SelectedFilters();
     this.$$filtered
       .pipe(
@@ -72,7 +73,7 @@ export class SearchResultsComponent implements OnInit {
         })
       )
       .subscribe(filter => {
-        let final = filter.map(filt => {
+        let final = filter.airlines.map(filt => {
           return this.itineraries.filter(it => {
             return it.TPA_Extensions.ValidatingCarrier.Code.includes(filt.Code)
               ? it
@@ -80,13 +81,14 @@ export class SearchResultsComponent implements OnInit {
           });
         });
         final = final.flat();
-        return this.$$test = of({
+        return this.$$itineraries = of({
           itineraries: final,
           itineraryData: this.itineraryData
         });
       });
-      */
+
   }
+
 
   pageChange(event) {
     this.pageSize = event.pageSize;

@@ -1,10 +1,7 @@
 import { FilterService } from "./../services/filter/filter.service";
-import { BehaviorSubject, Observable } from "rxjs";
-import { RootItinObject, MarketingAirline } from "./../models/itinerary.model";
+import { Observable, of } from "rxjs";
 import { Component, OnInit } from "@angular/core";
-import { PricedItinerary } from "../models/itinerary.model";
-import { SearchService } from "../services/search/search.service";
-import { SelectionModel } from "@angular/cdk/collections";
+
 
 @Component({
   selector: "app-search-filter",
@@ -14,16 +11,8 @@ import { SelectionModel } from "@angular/cdk/collections";
 export class SearchFilterComponent implements OnInit {
   airlineFilterCol = ["airline", "select"];
   stopsFilterCol = ["stops", "select"];
-  itineraries: PricedItinerary[] = [];
-  itineraryData: RootItinObject;
   $$filters: Observable<{ airlines: any[]; stops: any[] }>;
-  airlines = [];
-  stops = [];
-  $$filtered;
-  $$itineraries: Observable<{
-    itineraries: PricedItinerary[];
-    itineraryData: RootItinObject;
-  }>;
+$$selected;
   constructor( public _filter: FilterService) {}
 
   keys(obj) {
@@ -35,7 +24,8 @@ export class SearchFilterComponent implements OnInit {
   ngOnInit() {
     this._filter.getFilters();
     this.$$filters = this._filter.return$$Filters();
-    //this.$$filters.subscribe(el => console.log(el));
+
+
   }
 
   checkAllSelected(selection, filter) {
@@ -47,19 +37,7 @@ export class SearchFilterComponent implements OnInit {
     return this._filter.selectAll(selection, filter);
   }
 
-  getUnique(array, key) {
-    const unique = array
-      .map(item => item[key])
-      .map((item, index, final) => {
-        return final.indexOf(item) === index && index;
-      })
-      .filter(item => array[item])
-      .map(item => array[item]);
-    return unique;
-  }
   onSelect() {
-
-
     return this._filter.selectFilter();
   }
 }

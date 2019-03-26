@@ -26,12 +26,12 @@ export class InstantSearchComponent implements OnInit, OnDestroy {
     { key: "destination", value: "lax", validators: [Validators.required] },
     {
       key: "departuredate",
-      value: moment("2019-03-25"),
+      value: moment("2019-03-31"),
       validators: [Validators.required]
     },
     {
       key: "returndate",
-      value: moment("2019-03-28"),
+      value: moment("2019-04-05"),
       validators: [Validators.required]
     },
     { key: "numberofpassengers", value: "1", validators: [Validators.required] }
@@ -99,8 +99,9 @@ export class InstantSearchComponent implements OnInit, OnDestroy {
   }
 
   onInstant(value) {
-    this._filter.airlineselection.clear();
-    this._filter.stopselection.clear();
+    this._filter.$$filters.next({airlines:[],stops:[]});
+    this._filter.$$selectedFilter.next({airlines:[],stops:[]});
+   this._filter.airlineselection.clear();
     return this._search.getInstantFlights(value);
   }
   ngOnDestroy() {

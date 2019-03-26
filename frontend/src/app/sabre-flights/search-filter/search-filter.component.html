@@ -1,9 +1,7 @@
 
 <div class="container-fluid">
-  {{$$filters|async|json}}
   <div class="row">
     <div class="example-container">
-
         <table mat-table *ngIf="($$filters|async).airlines.length>0" [dataSource]="($$filters|async).airlines">
             <ng-container matColumnDef="airline">
               <th mat-header-cell *matHeaderCellDef>Airline</th>
@@ -11,29 +9,20 @@
             </ng-container>
             <ng-container matColumnDef="select">
                 <th mat-header-cell *matHeaderCellDef>
-                    <mat-checkbox
-                    (change)="$event? onSelectAll(_filter.airlineselection, 'airlines') :null;"
-                    [indeterminate]= "_filter.airlineselection.hasValue() && !checkAllSelected(_filter.airlineselection,'airlines')"
-                    [checked]="_filter.airlineselection.hasValue()&&checkAllSelected(_filter.airlineselection,'airlines')"
-                    >
-          </mat-checkbox>
+
                 </th>
                 <td mat-cell *matCellDef="let row">
                   <mat-checkbox (click)="$event.stopPropagation();"
-                                (change)="$event ? _filter.airlineselection.toggle(row) : null; onSelect()"
+                                (change)="$event ? _filter.airlineselection.toggle(row) : null; onSelect();"
                                 [checked]="_filter.airlineselection.isSelected(row)"
                                 >
                   </mat-checkbox>
-                  {{_filter.airlineselection.isSelected(row)}}
                 </td>
               </ng-container>
             <tr mat-header-row *matHeaderRowDef="airlineFilterCol"></tr>
             <tr mat-row *matRowDef="let row; columns: airlineFilterCol"></tr>
           </table>
-
     </div>
-
-
   </div>
   <div class="row">
     <div class="example-container">
@@ -45,15 +34,15 @@
             <ng-container matColumnDef="select">
                 <th mat-header-cell *matHeaderCellDef>
                     <mat-checkbox
-                    (change)="$event? checkAllSelected(stopselection,'stops'):null;"
-                    [indeterminate]= "_filter.stopselection.hasValue() && !checkAllSelected(stopselection,'stops')"
-                    [checked]="_filter.stopselection.hasValue()&&checkAllSelected(stopselection,'stops')"
+                    (change)="$event? onSelectAll(_filter.stopselection,'stops'):null;"
+                    [indeterminate]= "_filter.stopselection.hasValue() && !checkAllSelected(_filter.stopselection,'stops')"
+                    [checked]="_filter.stopselection.hasValue()&&checkAllSelected(_filter.stopselection,'stops')"
                     >
           </mat-checkbox>
                 </th>
                 <td mat-cell *matCellDef="let row">
                   <mat-checkbox (click)="$event.stopPropagation()"
-                                (change)="$event ? _filter.stopselection.toggle(row) : null;"
+                                (change)="$event ? _filter.stopselection.toggle(row) : null;onSelect();"
                                 [checked]="_filter.stopselection.isSelected(row)"
                                 >
                   </mat-checkbox>

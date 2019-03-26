@@ -49,6 +49,7 @@ function sabreAxios() {
     clientSecret: this.sabreConfig.clientSecret,
     accessTokenUri: this.sabreConfig.clientUri + "/v2/auth/token"
   });
+
   return sabreToken.credentials.getToken();
 }
 //PROMISE TO CREATE AXIOS INSTANCE, NEEDS INTERCEPTORS FOR RETRY COUNT AND RETRY WAIT ALGORITH SEE AXIOS.INSTANCE CONFIG THAT CAN BE ATTACHED AFTER INSTANCE IS CREATED
