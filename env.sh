@@ -3,5 +3,5 @@
 export DB_URI="mongodb+srv://test:test@test-apps-lqnpe.mongodb.net/paxwin?retryWrites=trueauthMechanism=SCRAM-SHA-1"
 export CLIENT_ID="V1:yzbwz743iav0eson:DEVCENTER:EXT"
 export CLIENT_SECRET="3xLPdN3v"
-export CLIENT_URI="https://api.test.sabre.com"
-export CLIENT_TOKEN="T1RLAQIKwDVfKuLDpnHPyPp+8/WTmnxrQxAa5aP/aoF0OGMoHNJ6TgJlAADAww8RNzKExI7ewP0g10SmR387qW7lVyj0i4/uT58GyTraGTy8pAK+s554CYzOMxehCalmO46dDq2cZxaW3FXcbT/sA5SQR40ofHf1EvVq0vYeIKzdnemcyXVn7/iwQ5WzjTWnt+u8sZjhV4FM8tB0gpQhi61ks/t4DIlCkr954LdkOsakpryU1pu9SyYkjTxBD+Vz/b7Sotw5aRNO5RaVKRzhhrNOzVBWFMKq0vTNqhIEKOHRX14OHsy2cGzhotiR"
+export CLIENT_URI="https://api-crt.cert.havail.sabre.com"
+export REST_TOKEN=T1RLAQLcGnQ+alukJF/vFou5uAc/uyL5yRByC71Y4CTi3mqrlWz1ABFqAADAY0Y860+qNCyGNDa3/D8/e0Z2MUebrBla8ZUixHllAxbh2QgLXQa4o0UiQulL4dHX/iqphKwow2TStXP8I7CNSF6sk80yjDE1Imxb/pjLZJ07uxz7DKhkLBw7vxAZ1LawqpNaYo2mTuguFi8nzxkCFHYWxzYJqe8YRSc1jasdLgL91RVkoZzmlVl3OU7NJo4taWJ0Ru80P591wextkA5OmmoSCn0F2I3SHjxJZQtPKWGT0bHEDzRq0N2bxfo0iZZ9
