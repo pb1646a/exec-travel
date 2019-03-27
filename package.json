@@ -12,7 +12,8 @@
     "backend": "git+https://pb1646a@bitbucket.org/pb1646a/node-backend-js.git#master",
     "base-64": "^0.1.0",
     "client-oauth2": "^4.2.3",
-    "moment": "^2.24.0"
+    "moment": "^2.24.0",
+    "rxjs": "^6.4.0"
   },
   "author": "",
   "license": "ISC"
