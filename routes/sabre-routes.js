@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const sabre = require("../controllers/sabre");
-const baseUrl = `https://api.test.sabre.com`;
+const baseUrl =process.env.CLIENT_URI;
 
 router.get("", (req, res, next) => {
   sabre

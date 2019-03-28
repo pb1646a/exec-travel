@@ -5,7 +5,7 @@ import {
 import { map, catchError } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { environment } from "src/environments/environment.prod";
+import { environment } from "src/environments/environment";
 import { Subject, Observable, BehaviorSubject, of } from "rxjs";
 import * as _moment from "moment";
 const moment = _moment;
