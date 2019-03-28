@@ -30,7 +30,7 @@ export class SearchService {
   constructor(private http: HttpClient) {}
   getInstantFlights(data) {
     data.departuredate = moment(data.departuredate).format("YYYY-MM-DD");
-    data.returndate = moment(data.returndate).format("YYYY-MM-DD");
+    data.returndate?data.returndate = moment(data.returndate).format("YYYY-MM-DD"):null;
     const params = data;
     this.http
       .get<{ message: string; data: RootItinObject }>(
@@ -43,6 +43,7 @@ export class SearchService {
         map(
           response => {
             if (response.message.toLowerCase() !== "success") {
+
               throw new Error(response.message);
             }
             return {
@@ -62,6 +63,7 @@ export class SearchService {
             };
           },
           catchError(err => {
+
             return of(err);
           })
         )
@@ -76,7 +78,8 @@ export class SearchService {
           });
         },
         err => {
-          this.errors = [{message: err.message}];
+          console.log(JSON.parse(err.message));
+          this.errors = [JSON.parse(err.message)];
           this.$$errors.next([...this.errors]);
         }
       );

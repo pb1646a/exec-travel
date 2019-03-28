@@ -24,8 +24,8 @@ export class SearchResultsComponent implements OnInit {
     itineraryData: RootItinObject;
   }>;
   $$filtered;
-  $$test;
-  filterVal: MarketingAirline[] = [];
+  errors;
+  $$errors;
   pageIndex = 0;
   lowerLimit = 0;
   pageSize = 10;
@@ -63,6 +63,7 @@ export class SearchResultsComponent implements OnInit {
       this.itineraryData = it.itineraryData;
       return (this.$$itineraries = of(it));
     });
+    this.$$errors = this._search.return$$errors();
     // filter strategy filter->filter or filter && filter && compare
 
     this.$$filtered = this._filter.return$$SelectedFilters();

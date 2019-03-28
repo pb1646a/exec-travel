@@ -11,8 +11,9 @@ import {
   startWith
 } from "rxjs/operators";
 import * as _moment from "moment";
-import { of } from "rxjs";
-import { FilterService } from '../services/filter/filter.service';
+import { of, BehaviorSubject } from "rxjs";
+import { FilterService } from "../services/filter/filter.service";
+import { CustomValidators } from 'src/app/common-components/services/validators/custom-validators';
 //import {default as _rollupMoment} from 'moment';
 const moment = _moment; //_rollupMoment ||
 @Component({
@@ -26,20 +27,22 @@ export class InstantSearchComponent implements OnInit, OnDestroy {
     { key: "destination", value: "lax", validators: [Validators.required] },
     {
       key: "departuredate",
-      value: moment("2019-03-31"),
+      value: moment(),
       validators: [Validators.required]
     },
     {
       key: "returndate",
-      value: moment("2019-04-05"),
+      value: moment(),
       validators: [Validators.required]
     },
-    { key: "numberofpassengers", value: "1", validators: [Validators.required] }
+    { key: "numberofpassengers", value: "1", validators: [Validators.required, Validators.min(1)] }
   ];
 
   cities: City[] = [];
   $$desCities;
   $$depCities;
+  return = true;
+  $$direction = new BehaviorSubject(this.return);
 
   constructor(
     public _cities: CitiesService,
@@ -65,6 +68,15 @@ export class InstantSearchComponent implements OnInit, OnDestroy {
       this.cities = city;
     });
     this._forms.setFields(this.formFields);
+    this._forms.form.setValidators(CustomValidators.maxLengthOfStay('departuredate', 'returndate'));
+    this.$$direction.subscribe(checked => {
+      !checked? this._forms.form.setValidators():
+      this._forms.form.setValidators(CustomValidators.maxLengthOfStay('departuredate', 'returndate'));
+      !checked
+        ? this._forms.removeFields("returndate")
+        : this._forms.setFields([this.formFields[3]]);
+
+    });
 
     // ****** could use same $$ for filter
     this.controls("departure")
@@ -99,10 +111,15 @@ export class InstantSearchComponent implements OnInit, OnDestroy {
   }
 
   onInstant(value) {
-    this._filter.$$filters.next({airlines:[],stops:[]});
-    this._filter.$$selectedFilter.next({airlines:[],stops:[]});
-   this._filter.airlineselection.clear();
+    this._filter.$$filters.next({ airlines: [], stops: [] });
+    this._filter.$$selectedFilter.next({ airlines: [], stops: [] });
+    this._search.$$errors.next(['']);
+    this._filter.airlineselection.clear();
     return this._search.getInstantFlights(value);
+  }
+  onDirection() {
+    this.return = !this.return;
+    this.$$direction.next(this.return);
   }
   ngOnDestroy() {
     this.$$depCities.unsubscribe();

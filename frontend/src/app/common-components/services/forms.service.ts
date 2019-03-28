@@ -31,9 +31,16 @@ export class FormsService {
     });
     return this.formArray;
   }
+  removeFields(control){
+    this.form.removeControl(control);
+    this.form.updateValueAndValidity();
+  }
   addDynamicFields(array) {
     this.form.addControl("items", new FormArray([]));
     this.fields = this.form.get("items") as FormArray;
     this.fields.push(this.createDynamicFields(array));
+  }
+  removeFormValidators(){
+    this.form.setValidators
   }
 }

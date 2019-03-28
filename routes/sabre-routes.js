@@ -7,7 +7,6 @@ router.get("", (req, res, next) => {
   sabre
     .get("/v1/lists/supported/cities")
     .then(response => {
-      console.log(response);
       let cities = response.data.Cities;
       let citiesObj = cities.map(async city => {
         let transport = await Promise.all(
@@ -65,7 +64,8 @@ router.get("/instant", (req, res, next) => {
       },
       error => {
         if (error.statusCode !== 500 || error.statusCode !== 401) {
-          return res.status(200).json({ message: error.message});
+          let err = JSON.stringify(error);
+          return res.status(200).json({ message: err});
         } else {
           throw new Error(JSON.stringify(error));
         }

@@ -1,9 +1,24 @@
 <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-3 col-md-3 col-sm-12 col-xs 12">
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                 <app-search-filter></app-search-filter>
               </div>
-          <div class="col-lg-9 col-md-9 col-sm-12 col-xs 12">
+          <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+            <div *ngIf="($$errors|async)?.length>0">
+           <div class="container-fluid">
+             <div class="row">
+               <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12"></div>
+               <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                  <div class="item-container">
+                      <div><mat-error *ngFor="let msg of ($$errors|async)">{{(msg.message)}}</mat-error></div>
+                    </div>
+               </div>
+               <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12"></div>
+               <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12"></div>
+
+             </div>
+           </div>
+            </div>
             <div *ngIf="($$itineraries|async)?.itineraries.length>0">
               <div class="container-fluid">
                 <div class="row">
