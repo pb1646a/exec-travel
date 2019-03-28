@@ -35,7 +35,6 @@ export class FilterService {
   selectAll(selection, filter) {
     this.$$filters.subscribe(data => {
       data[filter].forEach(el => {
-        console.log(el);
         selection.select(el);
       });
     });

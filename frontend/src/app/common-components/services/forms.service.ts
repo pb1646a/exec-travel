@@ -11,11 +11,14 @@ export class FormsService {
   formArray;
 
   constructor(private fb: FormBuilder) {
-    this.form = this.fb.group({});
+    //  this.form = this.fb.group({});
   }
-  setFields(fieldsArray) {
+  createForm(name): FormGroup {
+    return (name = this.fb.group({}));
+  }
+  setFields(fieldsArray, formName) {
     fieldsArray.forEach(field => {
-      this.form.addControl(
+      formName.addControl(
         field.key,
         new FormControl(field.value, Validators.compose(field.validators))
       );
@@ -31,16 +34,18 @@ export class FormsService {
     });
     return this.formArray;
   }
-  removeFields(control){
-    this.form.removeControl(control);
-    this.form.updateValueAndValidity();
+  removeFields(control, formName) {
+    formName.removeControl(control);
+    formName.updateValueAndValidity();
   }
   addDynamicFields(array) {
     this.form.addControl("items", new FormArray([]));
     this.fields = this.form.get("items") as FormArray;
     this.fields.push(this.createDynamicFields(array));
   }
-  removeFormValidators(){
-    this.form.setValidators
+  addFormValidators(validators, form) {
+let val = Validators.compose(validators);
+    form.setValidators(val);
+
   }
 }

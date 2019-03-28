@@ -78,7 +78,7 @@ export class SearchService {
           });
         },
         err => {
-          console.log(JSON.parse(err.message));
+
           this.errors = [JSON.parse(err.message)];
           this.$$errors.next([...this.errors]);
         }

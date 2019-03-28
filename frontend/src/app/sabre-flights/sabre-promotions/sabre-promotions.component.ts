@@ -10,10 +10,12 @@ import { FormsService } from "src/app/common-components/services/forms.service";
 export class SabrePromotionsComponent implements OnInit {
   images = [1, 2, 3].map(() => `https://picsum.photos/900/500?random&t=${Math.random()}`);
 
-
+testingForm;
   promotions=[{code: 'aa', link: ''}, {code:'ll', description: 'test2'}];
 
-  constructor(private _forms: FormsService) { }
+  constructor(private _forms: FormsService) {
+    this.testingForm = this._forms.createForm(this.testingForm);
+  }
   get testForm(): FormGroup {
     return this._forms.form;
   }
@@ -31,7 +33,8 @@ export class SabrePromotionsComponent implements OnInit {
 
   ];
   ngOnInit() {
-    this._forms.setFields(this.formFields);
+
+    this._forms.setFields(this.formFields, this.testingForm);
   }
 
   onSubmit(value){

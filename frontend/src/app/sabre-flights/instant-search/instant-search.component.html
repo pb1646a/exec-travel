@@ -28,12 +28,18 @@
               <div class="form-group">
                 <mat-form-field>
                   <input matInput formControlName="numberofpassengers" placeholder="Number of Travelers">
+                  <mat-error *ngIf="fc['numberofpassengers'].touched && fc['numberofpassengers'].errors?.required">Please Select # of Travelers</mat-error>
+                  <mat-error *ngIf="fc['numberofpassengers'].touched && fc['numberofpassengers'].errors?.min"> # of Travelers Must be at Least 1</mat-error>
                 </mat-form-field>
               </div>
 
           <div class="form-group">
             <mat-form-field>
                 <input matInput [matDatepicker]="departuredate" placeholder="Choose a Departure Date" formControlName= "departuredate">
+                <mat-error *ngIf="fc['departuredate'].touched && fc['departuredate'].errors?.required">Please Choose A Departure Date</mat-error>
+
+
+
                 <mat-datepicker-toggle matSuffix [for]="departuredate"></mat-datepicker-toggle>
                 <mat-datepicker #departuredate></mat-datepicker>
             </mat-form-field>
@@ -46,6 +52,9 @@
 
             <mat-form-field *ngIf="$$direction|async">
                 <input matInput [matDatepicker]="returndate" placeholder="Choose a Return Date" formControlName="returndate">
+                <mat-error *ngIf="fc['returndate'].touched && fc['returndate'].errors?.required">Please Choose A Return Date</mat-error>
+                <mat-error *ngIf="fc['returndate'].touched && fc['returndate'].errors?.maxLengthOfStay">Maximim 16 days Between Round-Trip Dates</mat-error>
+                <mat-error *ngIf="fc['returndate'].touched && fc['returndate'].errors?.validReturnDate">Return Date Cannot Be Before Departure Date</mat-error>
                 <mat-datepicker-toggle matSuffix [for]="returndate" ></mat-datepicker-toggle>
                 <mat-datepicker #returndate></mat-datepicker>
             </mat-form-field>

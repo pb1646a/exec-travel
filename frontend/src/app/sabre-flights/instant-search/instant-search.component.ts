@@ -13,7 +13,7 @@ import {
 import * as _moment from "moment";
 import { of, BehaviorSubject } from "rxjs";
 import { FilterService } from "../services/filter/filter.service";
-import { CustomValidators } from 'src/app/common-components/services/validators/custom-validators';
+import { CustomValidators } from "src/app/common-components/services/validators/custom-validators";
 //import {default as _rollupMoment} from 'moment';
 const moment = _moment; //_rollupMoment ||
 @Component({
@@ -35,7 +35,11 @@ export class InstantSearchComponent implements OnInit, OnDestroy {
       value: moment(),
       validators: [Validators.required]
     },
-    { key: "numberofpassengers", value: "1", validators: [Validators.required, Validators.min(1)] }
+    {
+      key: "numberofpassengers",
+      value: "1",
+      validators: [Validators.required, Validators.min(1)]
+    }
   ];
 
   cities: City[] = [];
@@ -43,39 +47,53 @@ export class InstantSearchComponent implements OnInit, OnDestroy {
   $$depCities;
   return = true;
   $$direction = new BehaviorSubject(this.return);
-
+  instantSearchForm: FormGroup;
   constructor(
     public _cities: CitiesService,
     public _forms: FormsService,
     public _search: SearchService,
     public _filter: FilterService
   ) {}
-  get instantSearchForm(): FormGroup {
-    return this._forms.form;
-  }
+
   get fc() {
-    return this._forms.form.controls;
+    return this.instantSearchForm.controls;
   }
   controls(control) {
-    return this._forms.form.get(control);
+    return this.instantSearchForm.get(control);
   }
   keys(object) {
     return Object.keys(object);
   }
   ngOnInit() {
+    this.instantSearchForm = this._forms.createForm(this.instantSearchForm);
     this._cities.getCities();
     this._cities.getCitiesAsObs().subscribe(city => {
       this.cities = city;
     });
-    this._forms.setFields(this.formFields);
-    this._forms.form.setValidators(CustomValidators.maxLengthOfStay('departuredate', 'returndate'));
-    this.$$direction.subscribe(checked => {
-      !checked? this._forms.form.setValidators():
-      this._forms.form.setValidators(CustomValidators.maxLengthOfStay('departuredate', 'returndate'));
-      !checked
-        ? this._forms.removeFields("returndate")
-        : this._forms.setFields([this.formFields[3]]);
 
+    this._forms.setFields(this.formFields, this.instantSearchForm);
+    this._forms.addFormValidators(
+      [
+        CustomValidators.maxLengthOfStay("departuredate", "returndate"),
+        CustomValidators.validReturnDate("departuredate", "returndate")
+      ],
+      this.instantSearchForm
+    );
+    this.$$direction.subscribe(checked => {
+      if (checked) {
+        this._forms.setFields([this.formFields[3]], this.instantSearchForm);
+        this._forms.addFormValidators(
+          [
+            CustomValidators.maxLengthOfStay("departuredate", "returndate"),
+            CustomValidators.validReturnDate("departuredate", "returndate")
+          ],
+          this.instantSearchForm
+        );
+      }
+      if (!checked) {
+        this._forms.addFormValidators("", this.instantSearchForm);
+        this._forms.removeFields("returndate", this.instantSearchForm);
+      }
     });
 
     // ****** could use same $$ for filter
@@ -113,7 +131,7 @@ export class InstantSearchComponent implements OnInit, OnDestroy {
   onInstant(value) {
     this._filter.$$filters.next({ airlines: [], stops: [] });
     this._filter.$$selectedFilter.next({ airlines: [], stops: [] });
-    this._search.$$errors.next(['']);
+    this._search.$$errors.next([""]);
     this._filter.airlineselection.clear();
     return this._search.getInstantFlights(value);
   }
