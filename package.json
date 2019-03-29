@@ -4,7 +4,7 @@
   "description": "Qucik Flights Components",
   "main": "main.js",
   "scripts": {
-    "start": "nodemon main.js"
+    "start": "main.js"
   },
   "dependencies": {
     "@angular/material-moment-adapter": "^7.1.1",
